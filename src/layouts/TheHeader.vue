@@ -16,18 +16,25 @@
 			</li>
 		  </ul>
 		</div>
+		  <div class="d-flex">
+			<button class="btn btn-outline-light" type="button" @click="goPage">
+				글쓰기
+			</button>
+		  </div>
 		</div>
 	  </nav>
 	</header>
 </template>
 
-<script>
-export default {
-	setup () {
-		
+<script setup>
+import { useRouter } from 'vue-router';
 
-		return {}
-	}
+
+const router = useRouter();
+const goPage = () => {
+	router.push({
+		name : 'PostCreate'
+	})
 }
 </script>
 
