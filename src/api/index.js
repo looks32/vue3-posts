@@ -10,4 +10,4 @@ export const posts = create(`${import.meta.env.VITE_APP_API_URL}posts/`);
 // production : http://localhost:5001/posts/
 
 // 확인
-console.log(import.meta.env.VITE_APP_API_URL)
+// console.log(import.meta.env.VITE_APP_API_URL)
