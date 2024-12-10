@@ -53,7 +53,7 @@ const edit = async () => {
 	try {
 		await updatePost(id, {...form.value});
 		// router.push({name: 'PostDetail', params: id});
-		vAlert('수정이 완료되었습니다!', 'a');
+		vAlert('수정이 완료되었습니다!', 'success');
 	} catch(error){
 		console.error(error);
 		vAlert('네트워크 오류');
