@@ -14,6 +14,9 @@
 			<li class="nav-item">
 				<router-link class="nav-link" active-class="active" to="/about">About</router-link>
 			</li>
+			<li class="nav-item">
+				<router-link class="nav-link" active-class="active" to="/posts">Posts</router-link>
+			</li>
 		  </ul>
 		</div>
 		  <div class="d-flex">

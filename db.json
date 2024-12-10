@@ -2,8 +2,8 @@
   "posts": [
     {
       "id": "1",
-      "title": "제목1",
-      "content": "내용1",
+      "title": "제목123",
+      "content": "내용123",
       "createdAt": "2024-12-01"
     },
     {
