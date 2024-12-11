@@ -12,7 +12,7 @@
 
 		<AppPagination :current-page="params._page" :page-count="pageCount" @page="page => params._page = page"/>
 
-		<AppModal :show="show" title="게시글" @close="closeModal">
+		<AppModal v-model="show" :show="show" title="게시글" @close="closeModal">
 			<template #default>
 				<div class="row g-3">
 					<div class="col-3 text-muted">제목</div>
