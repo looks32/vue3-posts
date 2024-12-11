@@ -8,7 +8,12 @@
 				<button class="btn btn-primary">수정</button>
 			</template>
 		</PostForm>
-		<AppAlert :show="showAlert" :message="alertMessage" :type="alertType"/>
+		
+		<!-- Transition -->
+		<!-- <AppAlert :show="showAlert" :message="alertMessage" :type="alertType"/> -->
+
+		<!-- Transition Group -->
+		<AppAlert :items="alerts"/>
 	</div>
 </template>
 
@@ -49,7 +54,7 @@ const edit = async () => {
 		vAlert('수정이 완료되었습니다!', 'success');
 	} catch(error){
 		console.error(error);
-		vAlert('네트워크 오류');
+		vAlert(error.message);
 	}
 }
 
@@ -57,17 +62,30 @@ const goDetailPage = () => {
 	router.push({name: 'PostDetail', params: id})
 }
 
+// Transiton Group
+const alerts = ref([]);
+
+// Transiton
 // alert
-const showAlert = ref(false);
-const alertMessage = ref('');
-const alertType = ref('error');
+// const showAlert = ref(false);
+// const alertMessage = ref('');
+// const alertType = ref('error');
+
 const vAlert = (message, type = 'error') => {
-	showAlert.value = true;
-	alertMessage.value = message;
-	alertType.value = type;
-	setTimeout(()=>{
-		showAlert.value = false;
+	//Transition Group
+	alerts.value.push({message, type});
+
+	setTimeout(() => {
+		alerts.value.shift();
 	},2000);
+
+	// Transtion
+	// showAlert.value = true;
+	// alertMessage.value = message;
+	// alertType.value = type;
+	// setTimeout(()=>{
+	// 	showAlert.value = false;
+	// },2000);
 }
 </script>
 
