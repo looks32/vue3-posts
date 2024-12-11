@@ -6,34 +6,28 @@
 		<hr class="my-4"/>
 		<AppGrid :items="posts">
 			<template v-slot="{item}">
-				<PostItem :title="item.title" :content="item.content" :created-at="item.createdAt" @click="goPage(item.id)"></PostItem>
+				<PostItem :title="item.title" :content="item.content" :created-at="item.createdAt" @click="goPage(item.id)" @modal="openModal(item)"></PostItem>
 			</template>
 		</AppGrid>
+
 		<AppPagination :current-page="params._page" :page-count="pageCount" @page="page => params._page = page"/>
 
-		<!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-		Launch demo modal
-		</button>
-
-		<!-- Modal -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				...
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		<AppModal :show="show" title="게시글" @close="closeModal">
+			<template #default>
+				<div class="row g-3">
+					<div class="col-3 text-muted">제목</div>
+					<div class="col-9 text-muted">{{ modalTitle }}</div>
+					<div class="col-3 text-muted">내용</div>
+					<div class="col-9 text-muted">{{ modalContent }}</div>
+					<div class="col-3 text-muted">등록일</div>
+					<div class="col-9 text-muted">{{ modalCreatedAt }}</div>
+				</div>
+			</template>
+			<template #actions>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="closeModal">닫기</button>
 				<button type="button" class="btn btn-primary">Save changes</button>
-			</div>
-			</div>
-		</div>
-		</div>
+			</template>
+		</AppModal>
 		
 		<template v-if="posts && posts.length > 0">
 			<hr class="my-5">
@@ -54,6 +48,7 @@ import AppCard from '@/components/AppCard.vue';
 import AppPagination from '@/components/AppPagination.vue';
 import AppGrid from '@/components/AppGrid.vue';
 import PostFilter from '@/components/posts/PostFilter.vue';
+import AppModal from '@/components/AppModal.vue';
 
 const router = useRouter();
 const posts = ref([]);
@@ -92,7 +87,21 @@ const goPage = (id) => {
 	})
 }
 
+// modal
+const show = ref(false);
+const modalTitle = ref('');
+const modalContent = ref('');
+const modalCreatedAt = ref('');
 
+const openModal = ({title, content, createdAt}) => {
+	show.value = true;
+	modalTitle.value = title;
+	modalContent.value = content;
+	modalCreatedAt.value = createdAt;
+}
+const closeModal = () => {
+	show.value = false;
+}
 </script>
 
 <style lang="scss" scoped>
