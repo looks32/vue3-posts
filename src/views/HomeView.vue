@@ -24,8 +24,6 @@ export default {
 </script>
 
 <script setup>
-import AppCard from '@/components/AppCard.vue';
-import AppGrid from '@/components/AppGrid.vue';
 import { inject, ref } from 'vue';
 
 const items = ref(['사과', '바나나', '포도', '바나나'])
