@@ -7,15 +7,20 @@ import router from './router';
 // import funcPlugins from './plugins/func';
 // import person from './plugins/person';
 import globalComponents from '@/plugins/global-components';
+// import focus from './directives/focus';
+import globalDirectives from './plugins/global-directives';
+
 
 
 const app = createApp(App);
+// app.directive('focus', focus);
 // app.use(funcPlugins);
 app.use(globalComponents);
 // app.use(objPlugins, {name:'짐코딩'});
 // app.use(person);
 // app.use(person, {name:'홍길동'});
 app.use(router);
+app.use(globalDirectives);
 app.mount('#app');
 import 'bootstrap/dist/js/bootstrap.js';
 
