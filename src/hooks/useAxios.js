@@ -1,7 +1,11 @@
 import axios from "axios";
-import { ref, unref, watchEffect } from "vue";
+import { isRef, ref, unref, watchEffect } from "vue";
 
 axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+
+const defaultConfig = {
+	method : 'get'
+}
 
 export const useAxios = (url, config = {}) => {
 	const response = ref(null);
@@ -15,6 +19,7 @@ export const useAxios = (url, config = {}) => {
 		error.value = null;
 		loading.value = true;
 		axios(url, {
+			...defaultConfig,
 			...config,
 			params : unref(params),
 		}).then(res => {
@@ -25,9 +30,18 @@ export const useAxios = (url, config = {}) => {
 		}).finally(() => {
 			loading.value = false;
 		});
+	};
+
+	// useAxios는 공통이기 때문에 많은 사람들이 사용한다.
+	// params를 반응형으로 보내는 사람도 있을 것이고
+	// 일반 object로 넘기는 사람이 있기 때문에 아래와 같이 사용해준다.
+	if (isRef(params)){
+		watchEffect(execute);
+	}else {
+		execute();
 	}
 
-	watchEffect(execute);
+	
 	return {
 		response,
 		data,

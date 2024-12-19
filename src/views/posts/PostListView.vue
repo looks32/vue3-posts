@@ -51,7 +51,7 @@ const params = ref({
 	title_like :''
 })
 
-const {response, data:posts, error, loading} = useAxios('/posts', {method: 'get', params});
+const {response, data:posts, error, loading} = useAxios('/posts', { params });
 
 const totalCount = computed(() => response.value.headers['x-total-count']);
 const pageCount = computed(() => Math.ceil(totalCount.value / params.value._limit));
