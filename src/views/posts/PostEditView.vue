@@ -1,5 +1,8 @@
 <template>
-	<div>
+	<AppLoading v-if="loading" />
+
+	<AppError v-else-if="error" :message="error.message" />
+	<div v-else>
 		<h2>게시글 수정</h2>
 		<hr class="my-4"/>
 		<PostForm v-model:title="form.title" v-model:content="form.content" @submit.prevent="edit">
@@ -12,11 +15,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getPostById, updatePost } from '@/api/posts';
 import PostForm from '@/components/posts/PostForm.vue';
 import { useAlert } from '@/composables/alert';
+import { useAxios } from '@/hooks/useAxios';
 
 const { vAlert, vSuccess } = useAlert();
 
@@ -24,10 +27,8 @@ const route = useRoute();
 const router = useRouter();
 const id = route.params.id
 
-const form = ref({
-	title: null,
-	content: null
-});
+
+const { error, loading, data:form } = useAxios(`/posts/${id}`);
 
 const fetchPost = async () => {
 	try{
