@@ -38,26 +38,27 @@ const form = ref({
 	content:null
 })
 
-const loading = ref(false);
-const error = ref(null);
 
+//  error: error.value, loading:loading.value 로 작성했을때 생기는 에러를 수정하기 위해 작업
+// error 과 loading 은 ref로 만들어진 값을 반환한다.
+// error, loading으로 바꾸면 되지만 그러면 반응형을 잃기때문에 아래와 같이 작업한다.(useAxios.js도 수정)
+const  { error, loading, execute } = useAxios('/posts', {
+	method : 'post',
+},{
+	// save 전에 axios 가 실행되면 안되기 때문에
+	// immediate를 활용해 준다. 
+	immediate:false,
+	onSuccess : () => {
+		router.push({name : 'PostList'})
+		vSuccess('등록이 완료되었습니다.');
+	},
+	onError : (err) => {
+		vAlert(err.message);
+	}
+});
 
-// 비동기 내부함수로 내부적으로 구현되어 있기 때문에
-// 여기에서는 구현이 어렵다.
-// 그래서 useAxios안에서(컴포저블 안에서) 내용을 수정해준다.
 const save = async() => {
-	({ error: error.value, loading:loading.value } = useAxios('/posts', {
-		method : 'post',
-		data : { ...form.value, createdAt : Date.now() }
-	},{
-		onSuccess : () => {
-			router.push({name : 'PostList'})
-			vSuccess('등록이 완료되었습니다.');
-		},
-		onError : (err) => {
-			vAlert(err.message);
-		}
-	}));
+	execute ({ ...form.value, createdAt : Date.now() })
 }
 
 // const save = async() => {
