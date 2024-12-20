@@ -27,6 +27,7 @@ import PostForm from '@/components/posts/PostForm.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlert } from '@/composables/alert';
+import { useAxios } from '@/hooks/useAxios';
 
 const { vAlert, vSuccess } = useAlert();
 
@@ -40,23 +41,42 @@ const form = ref({
 const loading = ref(false);
 const error = ref(null);
 
+
+// 비동기 내부함수로 내부적으로 구현되어 있기 때문에
+// 여기에서는 구현이 어렵다.
+// 그래서 useAxios안에서(컴포저블 안에서) 내용을 수정해준다.
 const save = async() => {
-	try{
-		loading.value = true;
-		await createPost({
-			...form.value,
-			createdAt : Date.now(),
-		});
-		router.push({name : 'PostList'})
-		vSuccess('등록이 완료되었습니다.');
-	} catch (err) {
-		// console.error(err);
-		vAlert(err.message);
-		error.value = err;
-	} finally {
-		loading.value = false;
-	}
+	({ error: error.value, loading:loading.value } = useAxios('/posts', {
+		method : 'post',
+		data : { ...form.value, createdAt : Date.now() }
+	},{
+		onSuccess : () => {
+			router.push({name : 'PostList'})
+			vSuccess('등록이 완료되었습니다.');
+		},
+		onError : (err) => {
+			vAlert(err.message);
+		}
+	}));
 }
+
+// const save = async() => {
+// 	try{
+// 		loading.value = true;
+// 		await createPost({
+// 			...form.value,
+// 			createdAt : Date.now(),
+// 		});
+// 		router.push({name : 'PostList'})
+// 		vSuccess('등록이 완료되었습니다.');
+// 	} catch (err) {
+// 		// console.error(err);
+// 		vAlert(err.message);
+// 		error.value = err;
+// 	} finally {
+// 		loading.value = false;
+// 	}
+// }
 
 const goListPage = () => {
 	router.push({

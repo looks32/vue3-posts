@@ -7,11 +7,13 @@ const defaultConfig = {
 	method : 'get'
 }
 
-export const useAxios = (url, config = {}) => {
+export const useAxios = (url, config = {}, options = {}) => {
 	const response = ref(null);
 	const data = ref(null);
 	const error = ref(null);
 	const loading = ref(false);
+
+	const { onSuccess, onError } = options;
 
 	const { params } = config;
 	const execute = () => {
@@ -25,8 +27,14 @@ export const useAxios = (url, config = {}) => {
 		}).then(res => {
 			response.value = res;
 			data.value = res.data;
+			if (onSuccess){
+				onSuccess(res);
+			}
 		}).catch(err => {
 			error.value = err;
+			if (onError){
+				onError(err);
+			}
 		}).finally(() => {
 			loading.value = false;
 		});
