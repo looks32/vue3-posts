@@ -5,6 +5,7 @@
 
 	<div v-else>
 		<h2>{{post.title}}</h2>
+		<p>id : {{ props.id }} isOdd : {{ isOdd }}</p>
 		<p>{{post.content}}</p>
 		<p class="text-muted">{{$dayjs((post.createdAt)).format('YYYY.MM.DD HH:mm:ss')}}</p>
 		<hr class="my-4"/>
@@ -49,6 +50,8 @@ import { useRouter } from 'vue-router';
 import { deletePost } from '@/api/posts';
 import { useAlert } from '@/composables/alert';
 import { useAxios } from '@/hooks/useAxios';
+import { computed, toRef, toRefs } from 'vue';
+import { useNumber } from '@/composables/number';
 
 const { vAlert, vSuccess } = useAlert();
 
@@ -59,7 +62,15 @@ const props = defineProps({
 const router = useRouter();
 // const id = route.params.id;
 
-const { error, loading, data:post } = useAxios(`/posts/${props.id}`);
+// 일반적인 toRef 방법
+// const idRef = toRef(props, 'id');
+
+// 구조분해할당을 사용하는 toRefs 방법
+const { id : idRef } = toRefs(props)
+
+const { isOdd } = useNumber(idRef);
+const url = computed(() => `/posts/${props.id}`);
+const { error, loading, data:post } = useAxios(url);
 
 const {
 	error: removeError,

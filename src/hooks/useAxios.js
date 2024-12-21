@@ -27,7 +27,7 @@ export const useAxios = (url, config = {}, options = {}) => {
 		data.value = null;
 		error.value = null;
 		loading.value = true;
-		axios(url, {
+		axios(unref(url), {
 			...defaultConfig,
 			...config,
 			params : unref(params),
@@ -51,7 +51,7 @@ export const useAxios = (url, config = {}, options = {}) => {
 	// useAxios는 공통이기 때문에 많은 사람들이 사용한다.
 	// params를 반응형으로 보내는 사람도 있을 것이고
 	// 일반 object로 넘기는 사람이 있기 때문에 아래와 같이 사용해준다.
-	if (isRef(params)){
+	if (isRef(params) || isRef(url)){
 		watchEffect(execute);
 	}else {
 		// immediate 일때만 즉시실행
