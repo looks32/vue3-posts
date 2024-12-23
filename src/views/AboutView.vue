@@ -2,11 +2,10 @@
 	<div>
 		<h2>About Vue</h2>
 		<h2>Store</h2>
-		<p>{{ store.counter }}</p>
-		<p>{{ store.doubleCount }}</p>
-		<p>{{ store.doubleCountPlusOne }}</p>
-		<button @click="store.increment()">click</button>
 		<p>{{ counter }}</p>
+		<p>{{ doubleCount }}</p>
+		<p>{{ doubleCountPlusOne }}</p>
+		<button @click="increment()">click</button>
 	</div>
 </template>
 
@@ -17,7 +16,15 @@ import { storeToRefs } from 'pinia';
 
 const store = useCounterStore();
 
-const { counter } = storeToRefs(store)
+const { counter, doubleCount, doubleCountPlusOne } = storeToRefs(store);
+const { increment } = store;
+
+// increment();
+// increment();
+// increment();
+// increment();
+
+// counter.value = 100;
 
 </script>
 
