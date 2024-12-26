@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRouter } from 'vue-router';
 import { deletePost } from '@/api/posts';
 import { useAlert } from '@/composables/alert';
 import { useAxios } from '@/hooks/useAxios';
@@ -107,6 +107,26 @@ const goEditPage = () => {
 	router.push({name:'PostEdit', params: {id : props.id} });
 }
 
+
+// 주소창에 내용이 변경될 때
+// <button class="btn btn-outline-dark" @click="$router.push('/posts/1')">다음글</button>
+onBeforeRouteUpdate(() => {
+	console.log('onBeforeRouteUpdate', onBeforeRouteUpdate)
+})
+
+// 원래 주소에서 벗어날때
+onBeforeRouteLeave(() => {
+	console.log('onBeforeRouteLeave', onBeforeRouteLeave)
+})
+</script>
+
+<script>
+// beforeRouteEnter 해당하는 컴포넌트로 진입할때.
+export default {
+	beforeRouteEnter(){
+		console.log('beforeRouteEnter')
+	}
+}
 </script>
 
 <style lang="scss" scoped>
